@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8"><title>世脉 WorldPulse</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世脉 WorldPulse</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 text-white p-6">
-    <h1 class="text-3xl font-bold">世脉 (WorldPulse)</h1>
-    <div id="news-container" class="mt-6 space-y-4">正在加载数据...</div>
+<body class="bg-slate-900 text-white min-h-screen p-4">
+    <div class="max-w-md mx-auto">
+        <h1 class="text-3xl font-bold text-center my-6">世脉 (WorldPulse)</h1>
+        <div id="news-container" class="space-y-4">
+            <p class="text-center text-gray-400">正在加载要情数据...</p>
+        </div>
+    </div>
+
     <script>
+        // 从仓库 data 文件夹读取 news.json
         fetch('data/news.json')
-            .then(res => res.json())
+            .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('news-container');
-                container.innerHTML = data.map(n => `
-                    <div class="p-4 bg-slate-800 rounded-lg">
-                        <h2 class="font-bold">${n.title}</h2>
-                        <p class="text-sm text-gray-400">${n.summary}</p>
-                    </div>`).join('');
+                container.innerHTML = data.map(item => `
+                    <div class="p-5 bg-slate-800 rounded-2xl border border-slate-700">
+                        <h2 class="text-lg font-semibold mb-2">${item.title}</h2>
+                        <p class="text-sm text-gray-300 mb-3">${item.summary || '暂无摘要'}</p>
+                        <a href="${item.url}" target="_blank" class="text-red-400 text-sm font-bold">查看原文 →</a>
+                    </div>
+                `).join('');
+            })
+            .catch(() => {
+                document.getElementById('news-container').innerHTML = '<p class="text-center">暂时没有新闻数据，请检查 Actions 运行情况。</p>';
             });
     </script>
 </body>
