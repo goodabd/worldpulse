@@ -16,7 +16,7 @@
 
     <script>
         // 从仓库 data 文件夹读取 news.json
-        fetch('data/news.json')
+      fetch('./data/news.json'
             .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('news-container');
